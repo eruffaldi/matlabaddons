@@ -53,9 +53,12 @@ sbnt = struct('name','bnt','folder','bnt*','website','https://github.com/bayesne
 spmtk = struct('name','pmtk','folder','pmtk','website','https://github.com/probml/pmtk3','url','','startup','');
 sdimple = struct('name','dimple','folder','dimple_v0_07','website','http://dimple.probprog.org/','url','https://s3.amazonaws.com/files.dimple.probprog.org/dimple_v0_07.zip','startup','startup.m');
 sgraph = struct('name','graphviz','folder','graphviz4matlab','website','http://it.mathworks.com/matlabcentral/fileexchange/21652-graphviz4matlab','url','http://it.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/21652/versions/4/download/zip','startup','');
-sgpml = struct('name','gpml','folder','gpml','website','http://www.gaussianprocess.org/gpml/code/matlab/doc/','url','http://gaussianprocess.org/gpml/code/matlab/release/gpml-matlab-v3.6-2015-07-07.zip','startup','');
-
-q = [sbtk,seeg,sfig,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml];
+sgpml = struct('name','gpml','folder','gpml','website','http://www.gaussianprocess.org/gpml/code/matlab/doc/','url','http://gaussianprocess.org/gpml/code/matlab/release/gpml-matlab-v3.6-2015-07-07.zip','startup','startup.m');
+snetlab = struct('name','netlab','folder','netlab','website','http://it.mathworks.com/matlabcentral/fileexchange/2654-netlab/','url','http://it.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/2654/versions/1/download/zip','startup','');
+sekfukf = struct('name','ekfukf','folder','ekfukf','website','http://becs.aalto.fi/en/research/bayes/ekfukf/install.html','url','','startup','');
+sjson = struct('name','json','folder','jsonlab','website','','url','','startup','');
+sjsonmex = struct('name','jsonmex','folder','matlab-json','website','','url','','startup','');
+q = [sbtk,seeg,sfig,sekfukf,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml,snetlab,sjson,sjsonmex];
 
 if nargout == 2
     s = [];
