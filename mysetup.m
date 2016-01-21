@@ -60,8 +60,8 @@ sjson = struct('name','json','folder','jsonlab','website','','url','','startup',
 sjsonmex = struct('name','jsonmex','folder','matlab-json','website','','url','','startup','');
 swobj = struct('name','wobj','folder','wobj','website','http://it.mathworks.com/matlabcentral/fileexchange/27982-wavefront-obj-toolbox','url','http://it.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/27982/versions/5/download/zip','startup','');
 sgraph = struct('name','graph','folder','toolbox_graph','website','http://it.mathworks.com/matlabcentral/fileexchange/5355-toolbox-graph','url','','startup','');
-surlread2 = struct('name','urlread2','folder','urlread2','website','http://www.mathworks.com/matlabcentral/fileexchange/35693-urlread2','url','http://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/35693/versions/3/download/zip','startup','',);
-q = [sbtk,seeg,sfig,sekfukf,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml,snetlab,sjson,sjsonmex,swobj,sgraph];
+surlread2 = struct('name','urlread2','folder','urlread2','website','http://www.mathworks.com/matlabcentral/fileexchange/35693-urlread2','url','http://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/35693/versions/3/download/zip','startup','');
+q = [sbtk,seeg,sfig,sekfukf,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml,snetlab,sjson,sjsonmex,swobj,sgraph,surlread2];
 
 if nargout == 2
     s = [];
