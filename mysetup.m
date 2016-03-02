@@ -1,5 +1,19 @@
 function mysetup(varargin)
-
+%
+% Simple Toolbox inclusion and activation
+% Emanuele Ruffaldi @ SSSA 2015-2016
+%
+% mysetup() 
+%   provides a list of known packages
+% mysetup(s1,..,sn)
+%   adds to path and initializes the packages
+%
+% For adding a new package to mysetup:
+% 1) prepare one local variable struct 
+% 2) add to the list
+{
+    
+};
 [q,s] = prep;
 
 if nargin == 0
@@ -20,7 +34,7 @@ else
                 if isempty(u)
                     u = qi.website;
                 end                   
-                error(sprintf('Package %s not downloaded. Look at %s',qi.name,u));
+                error(sprintf('Package %s not downloaded. Look at source: %s',qi.name,u));
             end
             if isempty(qi.startup)
                 if qi.folder(end) == '*'
@@ -61,7 +75,9 @@ sjsonmex = struct('name','jsonmex','folder','matlab-json','website','','url','',
 swobj = struct('name','wobj','folder','wobj','website','http://it.mathworks.com/matlabcentral/fileexchange/27982-wavefront-obj-toolbox','url','http://it.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/27982/versions/5/download/zip','startup','');
 sgraph = struct('name','graph','folder','toolbox_graph','website','http://it.mathworks.com/matlabcentral/fileexchange/5355-toolbox-graph','url','','startup','');
 surlread2 = struct('name','urlread2','folder','urlread2','website','http://www.mathworks.com/matlabcentral/fileexchange/35693-urlread2','url','http://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/35693/versions/3/download/zip','startup','');
-q = [sbtk,seeg,sfig,sekfukf,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml,snetlab,sjson,sjsonmex,swobj,sgraph,surlread2];
+sprt = struct('name','prt','folder','PRT','website','https://github.com/covartech/PRT','url','https://github.com/covartech/PRT','startup','prtPath');
+spcl = struct('name','pcd','folder','pcd','website','http://www.mathworks.com/matlabcentral/fileexchange/40382-matlab-to-point-cloud-library','url','http://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/40382/versions/6/download/zip','startup','');
+q = [sbtk,seeg,sfig,sekfukf,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml,snetlab,sjson,sjsonmex,swobj,sgraph,surlread2,sprt,spcl];
 
 if nargout == 2
     s = [];
