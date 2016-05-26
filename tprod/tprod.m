@@ -141,9 +141,10 @@ end
 
 try % try recompiling the MEX file
    fprintf(['Compiling ' mfilename ' for first use\n']);
-   mex('ddtprod.c','dstprod.c','sdtprod.c','sstprod.c','tprod_util.c','tprod_mex.c','mxInfo.c','mxInfo_mex.c','-O','-output',mfilename);
+   mex('tprod_util.c','ddtprod.c','dstprod.c','sdtprod.c','sstprod.c','tprod_mex.c','mxInfo.c','mxInfo_mex.c','-O','-output',mfilename);
    fprintf('done\n');
-catch
+catch e
+    e
    % this may well happen happen, get back to current working directory!
    cd(cwd);
    error('unable to compile MEX version of ''%s''%s\n%s%s', name, ...

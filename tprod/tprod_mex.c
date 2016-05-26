@@ -26,12 +26,29 @@ $Id: tprod_mex.c,v 1.10 2007-09-07 13:56:13 jdrf Exp $
 #define MIN(A,B)  ((A) < (B) ? (A) : (B))
 #endif
 
-
-/* matlab call to do the matrix product when possible */
 mxArray* MATLAB_mm(MxInfo zinfo, const MxInfo xinfo, const MxInfo yinfo,
 						 const MxInfo xrest, const MxInfo yrest,
-						 const MxInfo xmaccinfo, const MxInfo ymaccinfo);
+						 const MxInfo xmacc, const MxInfo ymacc);
 
+/* matlab call to do the matrix product when possible */
+TprodErrorCode ddtprod(const MxInfo zinfo, const MxInfo xrest, const MxInfo yrest,
+							const MxInfo xmacc, const MxInfo ymacc,
+							int blksz);
+
+/* matlab call to do the matrix product when possible */
+TprodErrorCode dstprod(const MxInfo zinfo, const MxInfo xrest, const MxInfo yrest,
+							const MxInfo xmacc, const MxInfo ymacc,
+							int blksz);
+
+/* matlab call to do the matrix product when possible */
+TprodErrorCode sdtprod(const MxInfo zinfo, const MxInfo xrest, const MxInfo yrest,
+							const MxInfo xmacc, const MxInfo ymacc,
+							int blksz);
+
+/* matlab call to do the matrix product when possible */
+TprodErrorCode sstprod(const MxInfo zinfo, const MxInfo xrest, const MxInfo yrest,
+							const MxInfo xmacc, const MxInfo ymacc,
+							int blksz);
 
 
 /* size at which it becomes more efficient to use tprod code than calling

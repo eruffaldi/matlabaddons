@@ -12,7 +12,8 @@ MEXEXT:=mexglx  # N.B. override in the call with MEXEXT=`mexext` for macs etc.
 # alternative which finds the extension automatically, when mexext exists
 # MEXEXT:=$(shell $(MATLABROOT)/mexext)
 
-FLAGS:=-g -ansi -pedantic -Wall
+#gcc only:  -ansi -pedantic -Wall
+FLAGS:=-g -O 
 #FLAGS:=-O -g  
 
 OPS=plus minus times rdivide ldivide power eq ne lt gt le ge

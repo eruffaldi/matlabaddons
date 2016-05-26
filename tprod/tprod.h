@@ -50,7 +50,8 @@ typedef enum { RXRY=0, CXRY=1, RXCY=2, CXCY=3} RealComplexInputTypes; /* enum fo
 #else /* fall back on C89 version, i.e. *no inlines* */
 #define INLINE
 #endif
-
+#undef INLINE
+#define INLINE
 typedef enum { /* types of error we could encounter in repop */
   OK=0, 
   ZTYPEMISMATCH,
