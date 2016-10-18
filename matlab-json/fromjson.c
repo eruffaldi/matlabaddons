@@ -25,7 +25,7 @@ void mexFunction (int nlhs, mxArray* plhs[], int nrhs, const mxArray* prhs[])
         mexErrMsgTxt("One input argument required.");
 
     } 
-    if (nlhs > 1) {
+    if (nlhs > 2) {
         mexErrMsgTxt("Too many output arguments.");
     }
 
