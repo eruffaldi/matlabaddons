@@ -24,6 +24,7 @@ function [imageData, alpha] = export_fig(varargin)
 %   export_fig ... -clipboard
 %   export_fig ... -update
 %   export_fig ... -nofontswap
+%   export_fig ... -linecaps
 %   export_fig(..., handle)
 %
 % This function saves a figure or single axes to one or more vector and/or
@@ -42,6 +43,7 @@ function [imageData, alpha] = export_fig(varargin)
 %   - Optionally append to file (pdf, tiff)
 %   - Vector formats: pdf, eps
 %   - Bitmap formats: png, tiff, jpg, bmp, export to workspace
+%   - Rounded line-caps (optional; pdf & eps only)
 %
 % This function is especially suited to exporting figures for use in
 % publications and presentations, because of the high quality and
@@ -152,6 +154,7 @@ function [imageData, alpha] = export_fig(varargin)
 %   -nofontswap - option to avoid font swapping. Font swapping is automatically
 %             done in vector formats (only): 11 standard Matlab fonts are
 %             replaced by the original figure fonts. This option prevents this.
+%   -linecaps - option to create rounded line-caps (vector formats only).
 %   handle -  The handle of the figure, axes or uipanels (can be an array of
 %             handles, but the objects must be in the same figure) to be
 %             saved. Default: gcf.
@@ -240,6 +243,10 @@ function [imageData, alpha] = export_fig(varargin)
 % 08/05/16: Added message about possible error reason when groot.Units~=pixels (issue #149)
 % 17/05/16: Fixed case of image YData containing more than 2 elements (issue #151)
 % 08/08/16: Enabled exporting transparency to TIF, in addition to PNG/PDF (issue #168)
+% 11/12/16: Added alert in case of error creating output PDF/EPS file (issue #179)
+% 13/12/16: Minor fix to the commit for issue #179 from 2 days ago
+% 22/03/17: Fixed issue #187: only set manual ticks when no exponent is present
+% 09/04/17: Added -linecaps option (idea by Baron Finer, issue #192)
 %}
 
     if nargout
@@ -270,7 +277,7 @@ function [imageData, alpha] = export_fig(varargin)
         fig = isolate_axes(fig);
     else
         % Check we have a figure
-        if ~isequal(get(fig, 'Type'), 'figure');
+        if ~isequal(get(fig, 'Type'), 'figure')
             error('Handle must be that of a figure, axes or uipanel');
         end
         % Get the old InvertHardcopy mode
@@ -654,7 +661,20 @@ function [imageData, alpha] = export_fig(varargin)
                 % Generate a pdf
                 eps2pdf(tmp_nam, pdf_nam_tmp, 1, options.append, options.colourspace==2, options.quality, options.gs_options);
                 % Ghostscript croaks on % chars in the output PDF file, so use tempname and then rename the file
-                try movefile(pdf_nam_tmp, pdf_nam, 'f'); catch, end
+                try
+                    % Rename the file (except if it is already the same)
+                    % Abbie K's comment on the commit for issue #179 (#commitcomment-20173476)
+                    if ~isequal(pdf_nam_tmp, pdf_nam)
+                        movefile(pdf_nam_tmp, pdf_nam, 'f');
+                    end
+                catch
+                    % Alert in case of error creating output PDF/EPS file (issue #179)
+                    if exist(pdf_nam_tmp, 'file')
+                        error(['Could not create ' pdf_nam ' - perhaps the folder does not exist, or you do not have write permissions']);
+                    else
+                        error('Could not generate the intermediary EPS file.');
+                    end
+                end
             catch ex
                 % Delete the eps
                 delete(tmp_nam);
@@ -662,13 +682,28 @@ function [imageData, alpha] = export_fig(varargin)
             end
             % Delete the eps
             delete(tmp_nam);
-            if options.eps
+            if options.eps || options.linecaps
                 try
                     % Generate an eps from the pdf
                     % since pdftops can't handle relative paths (e.g., '..\'), use a temp file
                     eps_nam_tmp = strrep(pdf_nam_tmp,'.pdf','.eps');
                     pdf2eps(pdf_nam, eps_nam_tmp);
-                    movefile(eps_nam_tmp,  [options.name '.eps'], 'f');
+
+                    % Issue #192: enable rounded line-caps
+                    if options.linecaps
+                        fstrm = read_write_entire_textfile(eps_nam_tmp);
+                        fstrm = regexprep(fstrm, '[02] J', '1 J');
+                        read_write_entire_textfile(eps_nam_tmp, fstrm);
+                        if options.pdf
+                            eps2pdf(eps_nam_tmp, pdf_nam, 1, options.append, options.colourspace==2, options.quality, options.gs_options);
+                        end
+                    end
+
+                    if options.eps
+                        movefile(eps_nam_tmp, [options.name '.eps'], 'f');
+                    else  % if options.pdf
+                        try delete(eps_nam_tmp); catch, end
+                    end
                 catch ex
                     if ~options.pdf
                         % Delete the pdf
@@ -855,6 +890,7 @@ function options = default_options()
         'quality',      [], ...
         'update',       false, ...
         'fontswap',     true, ...
+        'linecaps',     false, ...
         'gs_options',   {{}});
 end
 
@@ -945,6 +981,8 @@ function [fig, options] = parse_args(nout, fig, varargin)
                         end
                     case 'nofontswap'
                         options.fontswap = false;
+                    case 'linecaps'
+                        options.linecaps = true;
                     otherwise
                         try
                             wasError = false;
@@ -1160,7 +1198,7 @@ function A = downsize(A, factor)
 end
 
 function A = rgb2grey(A)
-    A = cast(reshape(reshape(single(A), [], 3) * single([0.299; 0.587; 0.114]), size(A, 1), size(A, 2)), class(A)); %#ok<ZEROLIKE>
+    A = cast(reshape(reshape(single(A), [], 3) * single([0.299; 0.587; 0.114]), size(A, 1), size(A, 2)), class(A)); % #ok<ZEROLIKE>
 end
 
 function A = check_greyscale(A)
@@ -1256,9 +1294,22 @@ function set_tick_mode(Hlims, ax)
     if ~iscell(M)
         M = {M};
     end
-    M = cellfun(@(c) strcmp(c, 'linear'), M);
-    set(Hlims(M), [ax 'TickMode'], 'manual');
-    %set(Hlims(M), [ax 'TickLabelMode'], 'manual');  % this hides exponent label in HG2!
+    %idx = cellfun(@(c) strcmp(c, 'linear'), M);
+    idx = find(strcmp(M,'linear'));
+    %set(Hlims(idx), [ax 'TickMode'], 'manual');  % issue #187
+    %set(Hlims(idx), [ax 'TickLabelMode'], 'manual');  % this hides exponent label in HG2!
+    for idx2 = 1 : numel(idx)
+        try
+            % Fix for issue #187 - only set manual ticks when no exponent is present
+            hAxes = Hlims(idx(idx2));
+            props = {[ax 'TickMode'],'manual', [ax 'TickLabelMode'],'manual'};
+            if isempty(strtrim(hAxes.([ax 'Ruler']).SecondaryLabel.String))
+                set(hAxes, props{:});  % no exponent, so update moth ticks and tick labels to manual
+            end
+        catch  % probably HG1
+            set(hAxes, props{:});  % revert back to old behavior
+        end
+    end
 end
 
 function change_rgb_to_cmyk(fname)  % convert RGB => CMYK within an EPS file

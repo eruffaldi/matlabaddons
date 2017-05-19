@@ -78,7 +78,7 @@ surlread2 = struct('name','urlread2','folder','urlread2','website','http://www.m
 sprt = struct('name','prt','folder','PRT','website','https://github.com/covartech/PRT','url','https://github.com/covartech/PRT','startup','prtPath');
 spcl = struct('name','pcd','folder','pcd','website','http://www.mathworks.com/matlabcentral/fileexchange/40382-matlab-to-point-cloud-library','url','http://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/40382/versions/6/download/zip','startup','');
 stprod = struct('name','tprod','folder','tprod','website','http://www.mathworks.com/matlabcentral/fileexchange/16275-tprod-arbitary-tensor-products-between-n-d-arrays','url','https://www.mathworks.com/accesslogin/index_fe.do?uri=http%3A%2F%2Fwww.mathworks.com%2Fmatlabcentral%2Ffileexchange%2F16275-tprod-arbitary-tensor-products-between-n-d-arrays','startup','');
-smanopt = struct('name','manopt','folder','manopt','website','http://www.manopt.org/index.html','startup','importmanopt')
+smanopt = struct('name','manopt','folder','manopt','website','http://www.manopt.org/index.html','url','','startup','importmanopt')
 q = [sbtk,seeg,sfig,sekfukf,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml,snetlab,sjson,sjsonmex,swobj,sgraph,surlread2,sprt,spcl,stprod,smanopt];
 
 if nargout == 2
