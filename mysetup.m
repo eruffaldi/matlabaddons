@@ -59,6 +59,7 @@ function [q,s] = prep()
 %NOTE: folder with asterisk means to use genpath
 sbtk = struct('name','btk','folder','btk','website','https://code.google.com/p/b-tk/','url','','startup','');
 seeg = struct('name','eeglab','folder','eeglab13_4_3b','website','http://sccn.ucsd.edu/eeglab/','url','','startup','');
+sgramm = struct('name','gramm','folder','gramm','website','https://github.com/piermorel/gramm','url','[subtree]','startup','');
 sfig = struct('name','exportfig','folder','export_fig','website','http://it.mathworks.com/matlabcentral/fileexchange/23629-export-fig','url','http://it.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/23629/versions/100/download/zip','startup','');
 squat =  struct('name','quaternions','folder','quaternions','website','http://it.mathworks.com/matlabcentral/fileexchange/1176-quaternion-toolbox','url','http://it.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/1176/versions/2/download/zip','startup','');
 srosbag = struct('name','rosbag','folder','rosbag','website','https://github.com/bcharrow/matlab_rosbag/releases','url','','startup','');
@@ -78,8 +79,9 @@ surlread2 = struct('name','urlread2','folder','urlread2','website','http://www.m
 sprt = struct('name','prt','folder','PRT','website','https://github.com/covartech/PRT','url','https://github.com/covartech/PRT','startup','prtPath');
 spcl = struct('name','pcd','folder','pcd','website','http://www.mathworks.com/matlabcentral/fileexchange/40382-matlab-to-point-cloud-library','url','http://www.mathworks.com/matlabcentral/mlc-downloads/downloads/submissions/40382/versions/6/download/zip','startup','');
 stprod = struct('name','tprod','folder','tprod','website','http://www.mathworks.com/matlabcentral/fileexchange/16275-tprod-arbitary-tensor-products-between-n-d-arrays','url','https://www.mathworks.com/accesslogin/index_fe.do?uri=http%3A%2F%2Fwww.mathworks.com%2Fmatlabcentral%2Ffileexchange%2F16275-tprod-arbitary-tensor-products-between-n-d-arrays','startup','');
-smanopt = struct('name','manopt','folder','manopt','website','http://www.manopt.org/index.html','url','','startup','importmanopt')
-q = [sbtk,seeg,sfig,sekfukf,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml,snetlab,sjson,sjsonmex,swobj,sgraph,surlread2,sprt,spcl,stprod,smanopt];
+smanopt = struct('name','manopt','folder','manopt','website','http://www.manopt.org/index.html','url','','startup','importmanopt');
+seasygui = struct('name','easygui','folder','easygui','website','','url','','startup','');
+q = [sbtk,seeg,sfig,sekfukf,sgramm,squat,srosbag,srobot,sbnt,spmtk,sdimple,sgraph,sgpml,snetlab,sjson,sjsonmex,swobj,sgraph,surlread2,sprt,spcl,stprod,smanopt,seasygui];
 
 if nargout == 2
     s = [];
